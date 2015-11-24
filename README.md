@@ -1,4 +1,4 @@
-# fonteo
+# Fonteo
 Fonteo is a jQuery based plugin for animating selected text on your website
 
 
