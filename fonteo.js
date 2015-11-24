@@ -1,0 +1,400 @@
+/*
+ *  Project: Fonteo 1.0
+ *  Description: Fonteo is a jQuery Plugin that animates selected text on your website
+ *  Author: majkl
+ *  License: MIT
+ */
+
+// the semi-colon before function invocation is a safety net against concatenated
+// scripts and/or other plugins which may not be closed properly.
+
+;(function ( $, window, document, undefined ) {
+
+    // undefined is used here as the undefined global variable in ECMAScript 3 is
+    // mutable (ie. it can be changed by someone else). undefined isn't really being
+    // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
+    // can no longer be modified.
+
+    // window is passed through as local variable rather than global
+    // as this (slightly) quickens the resolution process and can be more efficiently
+    // minified (especially when both are regularly referenced in your plugin).
+
+    // Create the defaults once
+    var pluginName = 'fonteo',
+        defaults = {
+            plugin: "fonteo"
+        };
+
+    // The actual plugin constructor
+    function fonteoPlugin( element, options ) {
+        //this.element = element;
+
+        // jQuery has an extend method which merges the contents of two or
+        // more objects, storing the result in the first object. The first object
+        // is generally empty as we don't want to alter the default options for
+        // future instances of the plugin
+        
+		this.elem = element;
+		this.$elem = $(element);
+		this.options = options;
+		
+		
+		// This next line takes advantage of HTML5 data attributes
+		// to support customization of the plugin on a per-element
+		// basis. For example,
+		// <div class=item' data-plugin-options='{"message":"Goodbye World!"}'></div>
+		//this.metadata = this.$elem.data( 'plugin-options' );
+		this.metadata = this.$elem.data( );
+		
+		this._init();
+		
+    }
+
+	
+	//Plugin.prototype = 
+	fonteoPlugin.prototype = 
+	{
+	
+		defaults: { 
+			direction: 'default',
+			infinite: false,
+			text: '',
+			speed: 100,
+			className: 'fonteo-letter',
+			tpl: "<span>{{fonteo-letter}}</span>",
+						
+			letter: false,
+			complete: false,
+			mouseenter: false,
+			mouseleave: false,	
+		},
+		
+		
+		lang: {
+			
+		},
+		
+		_init: function() {
+			// Introduce defaults that can be extended either 
+			// globally or using an object literal. 
+			this.config = $.extend({}, this.defaults, this.options, this.metadata);
+			//console.log( JSON.stringify( 1 ) )
+
+
+			var self = this
+			
+			self.id = self._getRandomInt(999,99999)
+			
+			var text = self.$elem.text()
+			if(text)
+			self.config.text = text
+			
+
+			self.$elem.text("")
+			
+			if(self.config.direction == 'left')
+			self._leftText();
+			else if(self.config.direction == 'right')
+			self._rightText();
+			else
+			self._createTextDefault();
+			
+			
+			if( self.config.mouseenter && typeof self.config.mouseenter == 'function' )
+			{
+				self.$elem.on('mouseenter','.'+self.config.className, function(){
+					self.config.mouseenter( $(this) )
+				})
+			}
+			
+			if( self.config.mouseleave && typeof self.config.mouseleave == 'function' )
+			{
+				self.$elem.on('mouseleave','.'+self.config.className, function(){
+					self.config.mouseleave( $(this) )
+				})
+			}
+			
+		},
+			
+		_createTextDefault: function (  )
+		{
+			var self = this
+			//var Otext=cont1.text();
+			var c = self.config.text.split("");
+
+			for(var i=0; i< c.length; i++)
+			{	
+				var jletter = self._createLetter( c[i] )
+
+				self.$elem.append( jletter );
+			}
+					
+		},
+		
+		
+		_leftText: function (  )
+		{
+			var self = this
+			//var Otext=cont1.text();
+			var c = self.config.text.split("");
+			var i=0;
+			var end = c.length;
+			var removelast = false;
+			var Otimer=setInterval( show, self.config.speed );
+			
+			function show(){
+				if(i<end)
+				{	
+					if(removelast)
+					//if(i > 10)
+					//console.log( $('.fonteo-letter:last').text() )
+					self.$elem.find('.'+self.config.className+':first').remove()
+					
+					var jletter = self._createLetter( c[i] )
+					
+					self.$elem.append( jletter );
+					
+					
+					//cont2.prepend( ocn );
+					i=i+1;
+				}
+				else
+				{
+					
+					//console.log(354)
+					
+					if(self.config.infinite)
+					{
+					removelast = true
+					//self.$elem.text("")
+					i=0
+					}
+					else
+					{
+					clearTimeout( Otimer );
+					self._onComplete()
+					}
+				}
+			};
+					
+		},
+		
+
+		
+		
+		_rightText: function()
+		{
+			var self = this
+			//var Otext=cont1.text();
+			var c = self.config.text.split("");
+			var i = c.length-1;
+			var l = i;
+			var removelast = false;
+			var t=setInterval( show, self.config.speed );
+			
+			function show(){
+				if(i>=0)
+				{	
+					if(removelast)
+					//console.log( $('.fonteo-letter:last').text() )
+					self.$elem.find('.'+self.config.className+':last').remove()
+					
+					var jletter = self._createLetter( c[i] )
+					
+					self.$elem.prepend( jletter );
+					//cont2.prepend( ocn );
+					i=i-1;
+		
+				}
+				else
+				{
+					if(self.config.infinite)
+					{
+						removelast = true
+						//self.$elem.text("")
+						i=l
+					}
+					else
+					{
+						clearTimeout( t );
+						self._onComplete()
+					}
+				}
+			};
+					
+		},
+		
+
+		
+		
+		_createLetter: function( letter ){
+			
+			var self = this
+			//var letter =  Ocontent[i]
+			if(self.config.tpl)
+			letter =  self.config.tpl.replace( '{{'+self.config.className+'}}', letter )
+			//alert(letter)
+			var jletter = $( letter )
+			jletter.addClass( self.config.className )
+			
+			if( self.config.letter && typeof self.config.letter === 'function' )
+			{
+				self.config.letter( jletter )
+			}
+			
+			/*
+			jletter.animate({  borderSpacing: 45 }, {
+				step: function(now,fx) {
+				  //$(this).css('transform','rotate('+now+'deg)');  
+					
+					 $(this).css({
+					  '-webkit-transform' : 'rotate(' + now + 'deg)',
+					  '-moz-transform'    : 'rotate(' + now + 'deg)',
+					  '-ms-transform'     : 'rotate(' + now + 'deg)',
+					  '-o-transform'      : 'rotate(' + now + 'deg)',
+					  'transform'         : 'rotate(' + now + 'deg)'
+					});
+
+				},
+				duration:'slow'
+			},'linear');
+			*/
+			
+			return jletter;
+		},	
+		
+		
+		_onComplete: function(){
+			
+			var self = this
+			
+			if( self.config.complete && typeof self.config.complete == 'function' )
+			{
+				self.config.complete()
+			}
+		
+		},
+		
+		/**
+		 * Returns a random integer between min (inclusive) and max (inclusive)
+		 * Using Math.round() will give you a non-uniform distribution!
+		 */
+		 _getRandomInt: function(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		},	
+		
+			
+		_eventCallback : function( event ) {
+			var self = this
+			
+			if(typeof self.config[ event ] === 'function')
+			{
+				//google.maps.event.addListener( mapObj, event, function(e) {
+				//alert(1)
+				//obj[event](e,mapObj) 
+				//var data = self.serialize()
+				//self.config[ event ] (data)
+				
+				//});
+			}
+				
+		},
+			
+		_initEvents : function(){
+		},
+
+		animate : function(){
+		
+			var self = this
+			
+			var animated = false;
+			
+			self.$elem.find('.'+self.config.className).each(function(){
+			
+			if( $(this).is(':animated'))
+			animated = true;
+			
+			})
+			
+			
+			
+			if( animated ) {
+			console.log('animated 1')
+			}
+			else
+			{
+			console.log('animated 0')
+			self.$elem.html('')
+			self._createTextDefault();
+			}
+		
+		
+		
+		
+		}
+
+
+	}
+	
+    // You don't need to change something below:
+    // A really lightweight plugin wrapper around the constructor,
+    // preventing against multiple instantiations and allowing any
+    // public function (ie. a function whose name doesn't start
+    // with an underscore) to be called via the jQuery plugin,
+    // e.g. $(element).defaultPluginName('functionName', arg1, arg2)
+    $.fn[pluginName] = function ( options ) {
+        var args = arguments;
+
+        // Is the first parameter an object (options), or was omitted,
+        // instantiate a new instance of the plugin.
+        if (options === undefined || typeof options === 'object') {
+            return this.each(function () {
+
+                // Only allow the plugin to be instantiated once,
+                // so we check that the element has no plugin instantiation yet
+                if (!$.data(this, 'plugin_' + pluginName)) {
+					
+                    // if it has no instance, create a new one,
+                    // pass options to our plugin constructor,
+                    // and store the plugin instance
+                    // in the elements jQuery data object.
+                    $.data(this, 'plugin_' + pluginName, new fonteoPlugin( this, options ));
+                }
+            });
+
+        // If the first parameter is a string and it doesn't start
+        // with an underscore or "contains" the `init`-function,
+        // treat this as a call to a public method.
+        } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+			
+            // Cache the method call
+            // to make it possible
+            // to return a value
+            var returns;
+
+            this.each(function () {
+                var instance = $.data(this, 'plugin_' + pluginName);
+
+                // Tests that there's already a plugin-instance
+                // and checks that the requested public method exists
+                if (instance instanceof fonteoPlugin && typeof instance[options] === 'function') {
+					//alert( options )
+                    // Call the method of our plugin instance,
+                    // and pass it the supplied arguments.
+                    returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
+                }
+
+                // Allow instances to be destroyed via the 'destroy' method
+                if (options === 'destroy') {
+                  $.data(this, 'plugin_' + pluginName, null);
+                }
+            });
+
+            // If the earlier cached method
+            // gives a value back return the value,
+            // otherwise return this to preserve chainability.
+            return returns !== undefined ? returns : this;
+        }
+    };
+
+}(jQuery, window, document));
