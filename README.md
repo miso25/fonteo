@@ -3,6 +3,9 @@ Fonteo is a jQuery based plugin for animating selected text on your website
 
 
 # Usage
+aa
+> $('.text').fonteo()
+
 
 # Public API
 
