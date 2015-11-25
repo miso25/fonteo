@@ -3,13 +3,16 @@ Fonteo is a jQuery based plugin for animating selected text on your website
 
 
 # Usage
-This is a basic usage. It splits a text within all elements with the class ".text" to individual letters.
+> <script type='text/javascript' src='fonteo.js' ></script>
+> <p class='text'>Hello World! I am Fonteo - a jQuery Plugin to animate text...</p>
+
+This is a basic usage. It only splits a text within all elements with the class ".text" to individual letters.
 
 > $('.text').fonteo()
 
-This is a basic usage. It splits a text within all elements with the class ".text" to individual letters.
+Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text is moving to the left.
 
-> $('.text').fonteo()
+> $('.text').fonteo({ direction: 'left' })
 
 # Public API
 
