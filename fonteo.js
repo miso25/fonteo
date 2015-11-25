@@ -152,19 +152,18 @@
 		
 		
 		
-		_getEdgeLetter( eq, p )
+		_getEdgeLetter: function ( eq, p )
 		{
 			var self = this
 			
 			
 			var ltrOut = self.$elem.find('.'+self.config.className+'').eq( eq )
 			//var ltrOut = self.$elem.find('.'+self.config.className+':last')
-						
+		
 			if(ltrOut.is(':animated'))
 			{
-			
-			eq += 1 * p
-			ltrOut = self._getEdgeLetter( eq, p )
+				eq += 1 * p
+				ltrOut = self._getEdgeLetter( eq, p )
 			}
 			//console.log( eq );
 			
@@ -507,7 +506,7 @@
 			var animated = false;
 			
 			self.$elem.find('.'+self.config.className).each(function(){
-				if( $(this).is(':animated'))
+				if( $(this).is(':animated') )
 					animated = true;
 			})
 		
