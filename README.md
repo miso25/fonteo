@@ -6,9 +6,13 @@ Fonteo is a jQuery based plugin for animating selected text on your website
 > <script type='text/javascript' src='fonteo.js' ></script>
 > <p class='text'>Hello World! I am Fonteo - a jQuery Plugin to animate text...</p>
 
-Start each line with a space.
- Text is '''preformatted''' and
- ''markups'' '''''can''''' be done
+*single asterisks*
+
+_single underscores_
+
+**double asterisks**
+
+__double underscores__
  
 This is a basic usage. It only splits a text within all elements with the class ".text" to individual letters.
 
