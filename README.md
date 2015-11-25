@@ -20,13 +20,13 @@ Adding some animation to the text with basic typing effect. If a value of the pr
 
 	$('.text').fonteo({ direction: 'left' })
 
-Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text starts moving to the left after the letters are initialized.
+Adding custom animation to the text.
 
 	var opts = {
 		direction: 'left', 
 		infinite: true,
 		letter: function(lr){
-			lr.animate({'font-size':'30px', 'margin-left':'5px'  })
+			lr.animate({'font-size':'30px', 'margin-left':'5px'})
 		}
 	}
 	
