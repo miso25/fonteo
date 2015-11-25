@@ -63,6 +63,7 @@
 			infinite: false,
 			text: '',
 			speed: 100,
+			pauseOnHover: false,
 			className: 'fonteo-letter',
 			tpl: "<span>{{fonteo-letter}}</span>",
 						
