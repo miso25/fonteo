@@ -96,6 +96,7 @@
 			
 			self.letters = self.config.text.split("");
 			self.wasPaused = false
+			self.wasToggled = false
 			
 			self._animate()
 			
@@ -186,6 +187,9 @@
 			{
 				self.wasPaused = false
 				var i = self.incLetter;
+				
+				
+				//i = i+1
 				//if(i <= 0)
 				//i = self.letters.length-1;
 				//var l = i;
@@ -295,6 +299,12 @@
 			{
 				self.wasPaused = false
 				var i = self.incLetter;
+				
+				//i = i-1
+				
+				
+				//if( i >= self.letters.length )
+				//i = self.letters.length - 1
 				//if(i <= 0)
 				//i = self.letters.length-1;
 				//var l = i;
@@ -499,6 +509,57 @@
 			
 			self._animate(false)
 		},
+		
+		togglePause : function(){
+			
+			var self = this
+			
+			if(self.wasPaused)
+			self.unpause()
+			else
+			self.pause()
+		},
+		
+		resetAnimation : function(){
+			
+			var self = this
+			
+			self.config.letterIn = false
+			self.config.letterOut = false
+		},
+		
+		setDirection : function(dir){
+			
+			var self = this
+			
+			//self.pause()
+			//clearTimeout( self.timer );
+			//self.config.direction = dir
+			
+			//self.unpause()
+			//self._animate()
+			//self.config.letterOut = false
+		},
+		
+		toggleDirection : function(){
+			
+			//var self = this
+			
+			//clearTimeout( self.timer );
+			//if(!self.repeating)
+			//return;
+			
+			//self.pause()
+			//console.log( self.letters.length )
+			//self.wasToggled = true
+			//clearTimeout( self.timer );
+			//self.config.direction = self.config.direction == 'left' ? 'right' : 'left'
+			
+			//self.unpause()
+			//self._animate()
+			//self.config.letterOut = false
+		},
+		
 		
 		animate : function(){
 		
