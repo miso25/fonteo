@@ -1,7 +1,7 @@
 /*
  *  Project: Fonteo 1.0
  *  Description: Fonteo is a jQuery Plugin that animates selected text on your website
- *  Author: miso25
+ *  Author: majkl
  *  License: MIT
  */
 
@@ -38,7 +38,10 @@
 		this.$elem = $(element);
 		this.options = options;
 		
-		
+		this.letters = {};
+		this.timer = {};
+		this.incLetter = 0;
+		this.repeating = false;
 		// This next line takes advantage of HTML5 data attributes
 		// to support customization of the plugin on a per-element
 		// basis. For example,
@@ -63,7 +66,8 @@
 			className: 'fonteo-letter',
 			tpl: "<span>{{fonteo-letter}}</span>",
 						
-			letter: false,
+			letterIn: false,
+			letterOut: false,
 			complete: false,
 			mouseenter: false,
 			mouseleave: false,	
@@ -89,42 +93,56 @@
 			if(text)
 			self.config.text = text
 			
-
-			self.$elem.text("")
+			self.letters = self.config.text.split("");
+			self.wasPaused = false
 			
-			if(self.config.direction == 'left')
-			self._leftText();
-			else if(self.config.direction == 'right')
-			self._rightText();
-			else
-			self._createTextDefault();
+			self._animate()
 			
 			
-			if( self.config.mouseenter && typeof self.config.mouseenter == 'function' )
-			{
-				self.$elem.on('mouseenter','.'+self.config.className, function(){
+			
+			self.$elem.on('mouseenter','.'+self.config.className, function(){
+					if( self.config.mouseenter && typeof self.config.mouseenter == 'function' )
 					self.config.mouseenter( $(this) )
-				})
-			}
+					if(self.config.pauseOnHover)
+					self.pause()
+			})
+
 			
-			if( self.config.mouseleave && typeof self.config.mouseleave == 'function' )
-			{
-				self.$elem.on('mouseleave','.'+self.config.className, function(){
+			
+			self.$elem.on('mouseleave','.'+self.config.className, function(){
+					if( self.config.mouseleave && typeof self.config.mouseleave == 'function' )
 					self.config.mouseleave( $(this) )
+					if(self.config.pauseOnHover)
+					self.unpause()
 				})
-			}
 			
 		},
 			
+		_animate: function ( clear )
+		{
+			var self = this
+			
+			if(clear !== false)
+			self.$elem.text("")
+			
+			if(self.config.direction == 'left')
+				self._leftText();
+			else if(self.config.direction == 'right')
+				self._rightText();
+			else
+				self._createTextDefault();
+		},
+		
 		_createTextDefault: function (  )
 		{
 			var self = this
+			self.$elem.text("")
 			//var Otext=cont1.text();
-			var c = self.config.text.split("");
+			//var c = self.config.text.split("");
 
-			for(var i=0; i< c.length; i++)
+			for(var i=0; i< self.letters.length; i++)
 			{	
-				var jletter = self._createLetter( c[i] )
+				var jletter = self._createLetter( self.letters[i] )
 
 				self.$elem.append( jletter );
 			}
@@ -132,25 +150,90 @@
 		},
 		
 		
+		
+		
+		_getEdgeLetter( eq, p )
+		{
+			var self = this
+			
+			
+			var ltrOut = self.$elem.find('.'+self.config.className+'').eq( eq )
+			//var ltrOut = self.$elem.find('.'+self.config.className+':last')
+						
+			if(ltrOut.is(':animated'))
+			{
+			
+			eq += 1 * p
+			ltrOut = self._getEdgeLetter( eq, p )
+			}
+			//console.log( eq );
+			
+			return ltrOut 
+		},
+		
+		
 		_leftText: function (  )
 		{
 			var self = this
 			//var Otext=cont1.text();
-			var c = self.config.text.split("");
+			//var c = self.config.text.split("");
 			var i=0;
-			var end = c.length;
+			var end = self.letters.length;
 			var removelast = false;
-			var Otimer=setInterval( show, self.config.speed );
+			self.timer = setInterval( show, self.config.speed );
+			
+			if(self.wasPaused)
+			{
+				self.wasPaused = false
+				var i = self.incLetter;
+				//if(i <= 0)
+				//i = self.letters.length-1;
+				//var l = i;
+				//if(self.repeating)
+				//var removelast = true;
+				//var end = c.length-1 - i
+			}
+			//self.timer = setTimeout(function doStuff() {
+				// here comes ajax functions and so on.
+			//	show()
+			//	setTimeout(doStuff, self.config.speed );
+			//}, self.config.speed );
 			
 			function show(){
-				if(i<end)
+				if( i < end )
 				{	
-					if(removelast)
-					//if(i > 10)
-					//console.log( $('.fonteo-letter:last').text() )
-					self.$elem.find('.'+self.config.className+':first').remove()
 					
-					var jletter = self._createLetter( c[i] )
+					if(self.repeating)
+					{
+						//if(i > 10)
+						//console.log( $('.fonteo-letter:last').text() )
+						//self.$elem.find('.'+self.config.className+':first').remove()
+						var ltrOut = self._getEdgeLetter(0, 1)
+						
+						if( self.config.letterOut && typeof self.config.letterOut === 'function' )
+						{
+							//var ltrOut = self._firstLetter(0)
+							
+							//if(ltrOut.is(':animated'))
+							//{
+							
+							//var ltrOut = self.$elem.find('.'+self.config.className+'').eq(-2)
+							
+							//if(ltrOut.is(':animated'))
+							//console.log('aaaaaanimated');
+							//}
+							//else
+							//{}
+							
+							self.config.letterOut( ltrOut )
+						}
+						else
+						{
+							ltrOut.remove()
+						}
+					}
+				
+					var jletter = self._createLetter( self.letters[i] )
 					
 					self.$elem.append( jletter );
 					
@@ -161,73 +244,170 @@
 				else
 				{
 					
+					self.repeating = true
 					//console.log(354)
 					
 					if(self.config.infinite)
 					{
-					removelast = true
+					//removelast = true
 					//self.$elem.text("")
 					i=0
 					}
 					else
 					{
-					clearTimeout( Otimer );
+					clearTimeout( self.timer );
+					//clearTimeout( Otimer );
 					self._onComplete()
 					}
 				}
+				
+				self.incLetter = i
+				
+				
 			};
 					
 		},
 		
 
+		
 		
 		
 		_rightText: function()
 		{
 			var self = this
 			//var Otext=cont1.text();
-			var c = self.config.text.split("");
-			var i = c.length-1;
-			var l = i;
-			var removelast = false;
-			var t=setInterval( show, self.config.speed );
+			//var c = self.config.text.split("");
+			//if(self.config.direction == 'right')
+			{
+				var i = self.letters.length-1;
+			}
+			//else
+			//{
+			//	var i = 0;
+			//}
 			
+			var l = i;
+			//var end = 0
+			
+			//var removelast = false;
+			
+			if(self.wasPaused)
+			{
+				self.wasPaused = false
+				var i = self.incLetter;
+				//if(i <= 0)
+				//i = self.letters.length-1;
+				//var l = i;
+				//if(self.repeating)
+				//var removelast = true;
+				//var end = c.length-1 - i
+			}
+			
+			//console.log( self.letters.length + " - " + i )
+			//alert(self.config.speed) 
+			self.timer = setInterval( show, self.config.speed );
+			//self.timer = setTimeout( show, self.config.speed );
+			//self.timer = setInterval( show, 1000 / 60 );
+			
+			//self.timer = setTimeout(function doStuff() {
+				// here comes ajax functions and so on.
+			//	show()
+			//	setTimeout(doStuff, self.config.speed );
+			//}, self.config.speed );
+
 			function show(){
-				if(i>=0)
+			
+
+				//return
+				
+				if( i >= 0 )
 				{	
-					if(removelast)
+					if( self.repeating )
+					{
+						
+						var ltrOut = self._getEdgeLetter(-1, -1)
+						//var ltrOut = self.$elem.find('.'+self.config.className+':last')
+						if( self.config.letterOut && typeof self.config.letterOut === 'function' )
+						{
+							
+							//if(ltrOut.is(':animated'))
+							//{
+							
+							//var ltrOut = self.$elem.find('.'+self.config.className+'').eq(-2)
+							
+							//if(ltrOut.is(':animated'))
+							//console.log('aaaaaanimated');
+							//}
+							//else
+							//{}
+							
+							self.config.letterOut( ltrOut )
+						}
+						else
+						{
+							ltrOut.remove()
+						}
+					}
 					//console.log( $('.fonteo-letter:last').text() )
-					self.$elem.find('.'+self.config.className+':last').remove()
+					//self.$elem.find('.'+self.config.className+':last').remove()
 					
-					var jletter = self._createLetter( c[i] )
+					var jletter = self._createLetter( self.letters[i] )
 					
 					self.$elem.prepend( jletter );
 					//cont2.prepend( ocn );
+					
 					i=i-1;
-		
+					
+					
 				}
 				else
 				{
+					//console.log(i)
+					
+					self.repeating = true
+					
 					if(self.config.infinite)
 					{
-						removelast = true
+						//removelast = true
 						//self.$elem.text("")
 						i=l
+						
 					}
 					else
 					{
-						clearTimeout( t );
+						clearTimeout( self.timer );
 						self._onComplete()
 					}
 				}
+				
+				self.incLetter = i
+				
 			};
 					
 		},
 		
 
 		
+		/*
+		_createLetters: function( ii ){
+			
+			var self = this	
+			self.letters = self.config.text.split("");
+			self.$elem.text('')
+			
+			for(var i=ii+1; i < self.letters.length ; i++)
+			{	
+				var animate = false
+				if( ii % 2 == 0 )
+					animate = true
+				var jletter = self._createLetter( self.letters[i], animate )
+
+				self.$elem.append( jletter );
+			}
+		},
+		*/
 		
-		_createLetter: function( letter ){
+		_createLetter: function( letter, animate ){
 			
 			var self = this
 			//var letter =  Ocontent[i]
@@ -237,9 +417,9 @@
 			var jletter = $( letter )
 			jletter.addClass( self.config.className )
 			
-			if( self.config.letter && typeof self.config.letter === 'function' )
+			if( self.config.letterIn && typeof self.config.letterIn === 'function' )
 			{
-				self.config.letter( jletter )
+				self.config.letterIn( jletter )
 			}
 			
 			/*
@@ -303,6 +483,23 @@
 		_initEvents : function(){
 		},
 
+		pause : function(){
+			
+			var self = this
+			clearTimeout( self.timer );
+			
+			self.wasPaused = true
+			//console.log( 1 )
+			
+		},
+		
+		unpause : function(){
+			
+			var self = this
+			
+			self._animate(false)
+		},
+		
 		animate : function(){
 		
 			var self = this
@@ -310,27 +507,21 @@
 			var animated = false;
 			
 			self.$elem.find('.'+self.config.className).each(function(){
-			
-			if( $(this).is(':animated'))
-			animated = true;
-			
+				if( $(this).is(':animated'))
+					animated = true;
 			})
-			
-			
-			
+		
 			if( animated ) {
-			console.log('animated 1')
+				//console.log('animated 1')
 			}
 			else
 			{
-			console.log('animated 0')
-			self.$elem.html('')
-			self._createTextDefault();
+				//console.log('animated 0')
+				self.$elem.text('')
+				//self._createTextDefault();
+				self._animate()
 			}
-		
-		
-		
-		
+	
 		}
 
 
@@ -398,3 +589,5 @@
     };
 
 }(jQuery, window, document));
+
+
