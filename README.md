@@ -36,7 +36,7 @@ Adding custom animation to the text. Check [jsFiddle example](https://jsfiddle.n
 Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/)
 
 # Public API
-Toggle direction of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
+Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
 
 # Browser compatibility
 
