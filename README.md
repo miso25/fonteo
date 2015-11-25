@@ -20,12 +20,13 @@ Adding some animation to the text with basic typing effect. If a value of the pr
 
 	$('.text').fonteo({ direction: 'left' })
 	
-Adding custom animation to the text.
+Adding custom animation to the text. [jsFiddle example](https://jsfiddle.net/miso25/fgg9c0r9/)
 
 	var opts = {
 		direction: 'left', 
 		infinite: true,
-		letter: function(lr){
+		speed: 200,
+		letterIn: function(lr){
 			lr.animate({'font-size':'30px', 'margin-left':'5px'})
 		}
 	}
