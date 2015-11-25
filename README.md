@@ -16,12 +16,10 @@ This is a basic usage. It only splits a text within all elements with the class 
 
 	$('.text').fonteo()
 
-Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text starts moving to the left after the letters are initialized.
+Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text starts moving to the left after the letters are initialized. [jsFiddle example](https://jsfiddle.net/miso25/xup0tvua/1/)
 
 	$('.text').fonteo({ direction: 'left' })
 	
-[jsFiddle example](https://jsfiddle.net/miso25/xup0tvua/1/)
-
 Adding custom animation to the text.
 
 	var opts = {
