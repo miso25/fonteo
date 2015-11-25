@@ -6,7 +6,7 @@ Fonteo is a jQuery based plugin for animating selected text on your website
 
 Add Fonteo Plugin to your page 
 
-	<script type='text/javascript' src='fonteo.js' ></script>
+	<script type='text/javascript' src='fonteo.min.js' ></script>
 
 Then insert a text to your HTML output 
 
