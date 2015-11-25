@@ -33,6 +33,8 @@ Adding custom animation to the text. Check [jsFiddle example](https://jsfiddle.n
 	
 	$('.text').fonteo( opts )
 	
+Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/)
+
 # Public API
 
 # Browser compatibility
