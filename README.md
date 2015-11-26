@@ -46,6 +46,10 @@ Option | Data Attribute | Default | Description
 direction | data-direction  | direction  | direction
 infinite | data-infinite  | infinite  | infinite
 speed | data-speed  | speed  | speed
+text | data-text  | text  | text
+pauseOnHover | data-pause-on-hover  | pauseOnHover  | pauseOnHover
+className | data-class-name  | className  | className
+tpl | data-tpl  | tpl  | tpl
 
 # Public API
 Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
