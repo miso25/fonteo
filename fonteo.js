@@ -1,7 +1,7 @@
 /*
  *  Project: Fonteo 1.0
  *  Description: Fonteo is a jQuery Plugin that animates selected text on your website
- *  Author: majkl
+ *  Author: miso25
  *  License: MIT
  */
 
