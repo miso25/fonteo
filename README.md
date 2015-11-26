@@ -43,13 +43,13 @@ A complete listing of the options that can be passed to the method is below.
 
 Option | Data Attribute | Default | Description
 ----|------|----|----
-direction | data-direction  | direction  | direction
-infinite | data-infinite  | infinite  | infinite
-speed | data-speed  | speed  | speed
-text | data-text  | text  | text
-pauseOnHover | data-pause-on-hover  | pauseOnHover  | pauseOnHover
-className | data-class-name  | className  | className
-tpl | data-tpl  | tpl  | tpl
+direction | data-direction  | 'default'  | direction
+infinite | data-infinite  | false  | infinite
+speed | data-speed  | 100  | speed
+text | data-text  | ''  | text
+pauseOnHover | data-pause-on-hover  | false  | pauseOnHover
+className | data-class-name  | 'fonteo-letter'  | className
+tpl | data-tpl  | '<span>{{fonteo-letter}}</span>'  | tpl
 
 # Public API
 Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
