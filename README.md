@@ -41,11 +41,11 @@ Use events 'letterIn' and 'letterOut' for adding custom animation to your text. 
 # Options
 A complete listing of the options that can be passed to the method is below.
 
-dog | bird | cat
+Option | Data Attribute | Default | Description
 ----|------|----
-foo | foo  | foo
-bar | bar  | bar
-baz | baz  | baz
+direction | data-direction  | direction  | direction
+infinite | data-infinite  | infinite  | infinite
+speed | data-speed  | speed  | speed
 
 # Public API
 Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
