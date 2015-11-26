@@ -1,9 +1,10 @@
 # Fonteo
 Fonteo is a jQuery based plugin for animating selected text on your website
 
+# Requirements:
+Fonteo plugin requires the latest version of [jQuery](http://jquery.com/).
 
 # Usage
-
 Add Fonteo Plugin to your page 
 
 	<script type='text/javascript' src='fonteo.min.js' ></script>
