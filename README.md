@@ -9,7 +9,7 @@ Add Fonteo Plugin to your page
 
 	<script type='text/javascript' src='fonteo.min.js' ></script>
 
-Then insert a text to your HTML output 
+Then insert an element with some text to your HTML output 
 
 	<p class='text'>Hello World! I am Fonteo - a jQuery Plugin to animate text...</p>
  
