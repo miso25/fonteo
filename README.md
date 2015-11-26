@@ -22,6 +22,8 @@ Adding some animation to the text with basic typing effect. If a value of the pr
 	
 Adding custom animation to the text. Check [jsFiddle example](https://jsfiddle.net/miso25/fgg9c0r9/)
 
+Simple animation. Check [jsFiddle example](https://jsfiddle.net/miso25/956d0nkp/)
+
 	var opts = {
 		direction: 'left', 
 		infinite: true,
