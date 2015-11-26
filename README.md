@@ -42,7 +42,7 @@ Use events 'letterIn' and 'letterOut' for adding custom animation to your text. 
 A complete listing of the options that can be passed to the method is below.
 
 Option | Data Attribute | Default | Description
-----|------|----
+----|------|----|----
 direction | data-direction  | direction  | direction
 infinite | data-infinite  | infinite  | infinite
 speed | data-speed  | speed  | speed
