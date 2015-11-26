@@ -38,6 +38,15 @@ Simple loading animation. Check [jsFiddle example](https://jsfiddle.net/miso25/9
 	
 Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/)
 
+# Options
+A complete listing of the options that can be passed to the method is below.
+
+dog | bird | cat
+----|------|----
+foo | foo  | foo
+bar | bar  | bar
+baz | baz  | baz
+
 # Public API
 Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
 
