@@ -10,6 +10,28 @@
 
 ;(function ( $, window, document, undefined ) {
 
+	
+	window.cancelRequestAnimFrame = ( function() {
+			return window.cancelAnimationFrame          ||
+				window.webkitCancelRequestAnimationFrame    ||
+				window.mozCancelRequestAnimationFrame       ||
+				window.oCancelRequestAnimationFrame     ||
+				window.msCancelRequestAnimationFrame        ||
+				clearTimeout
+		} )();
+
+	
+	window.requestAnimFrame = (function(){
+		return  window.requestAnimationFrame       || 
+			window.webkitRequestAnimationFrame || 
+				window.mozRequestAnimationFrame    || 
+				window.oRequestAnimationFrame      || 
+				window.msRequestAnimationFrame     || 
+				function(/* function */ callback, /* DOMElement */ element){
+					return window.setTimeout(callback, 1000 / 60);
+				};
+		})();
+		
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
     // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
@@ -97,8 +119,19 @@
 			self.letters = self.config.text.split("");
 			self.wasPaused = false
 			self.wasToggled = false
+			self.speed = self.config.speed
+			self.request = 0
 			
-			self._animate()
+			self.reps = 0
+			self.length = self.letters.length
+			
+			//self._animate()
+			self.animation = self.config.direction === 'left' || self.config.direction === 'right'
+			if(self.animation)
+			self._loop()
+			else
+			self._createTextDefault();
+			
 			
 			
 			
@@ -116,6 +149,13 @@
 					self.config.mouseleave( $(this) )
 					if(self.config.pauseOnHover)
 					self.unpause()
+				})
+			self.$elem.on('click','.'+self.config.className, function(){
+					//if( self.config.mouseleave && typeof self.config.mouseleave == 'function' )
+					//self.config.mouseleave( $(this) )
+					//if(self.config.pauseOnHover)
+					
+					self.toggleDirection()
 				})
 			
 		},
@@ -173,6 +213,166 @@
 		},
 		
 		
+		
+		_loop: function ( start, end )
+		{
+			var self = this
+			
+			
+			
+			var fps,fpsInterval,startTime,now,then,delta;
+			fps = self.speed	// highest number = highest speed
+			
+			
+			fpsInterval = 1000 / fps;
+			//fpsInterval=1;
+			then=Date.now();
+			startTime=then;
+				
+			self.frames = 0
+
+
+			//self.request = 0
+			
+			// to store the request
+			//var request;
+
+			// start and run the animloop
+			
+
+
+			function animloop(){
+			  //render();
+			  
+				self.request = requestAnimFrame( animloop );
+			 
+				
+			  
+				self.frames ++ 
+			  
+			  
+				now = Date.now();
+				delta = now - then;
+
+				
+				
+				
+				// if enough time has elapsed, draw the next frame
+				if (delta > fpsInterval) {
+				//if (elapsed > fpsInterval) {
+				//console.log(delta + " - " + self.speed )
+				//if(fpsInterval > 50)
+				//fpsInterval = fpsInterval + steps
+					
+					// Get ready for next frame by setting then=now, but also adjust for your
+					// specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+					then = now - (delta % fpsInterval);
+
+					
+					self._rep()
+					
+
+					//if(!self.paused)
+					//self._rep()
+				}
+
+				
+					// Put your drawing code here
+					//console.log( Date.now() )
+				
+
+				
+				
+			}
+			//})();
+			animloop()
+			
+			//})();
+
+			// cancelRequestAnimFrame to stop the loop in 1 second
+			//setTimeout(function(){
+				//cancelRequestAnimFrame(request);                
+			//}, 10000)
+
+			
+				
+		},
+		
+		
+		
+		
+		_rep: function (  )
+		{
+			var self = this
+			
+				if( self.reps < self.length )
+					{
+						if(self.repeating)
+						{
+							//if(i > 10)
+							//console.log( $('.fonteo-letter:last').text() )
+							//self.$elem.find('.'+self.config.className+':first').remove()
+							//var ltrOut = self._getEdgeLetter(0, 1) // append
+							
+							if(self.config.direction == 'right')			// right
+							{
+							
+								var ltrOut = self._getEdgeLetter(-1, -1) // prepend
+							}
+							else
+								var ltrOut = self._getEdgeLetter(0, 1) // prepend
+			
+							if( self.config.letterOut && typeof self.config.letterOut === 'function' )
+							{
+								//if(ltrOut.is(':animated'))
+								//console.log('aaaaaanimated');
+
+								
+								self.config.letterOut( ltrOut )
+							}
+							else
+							{
+								ltrOut.remove()
+							}
+						}
+						
+			
+			
+						if(self.config.direction == 'right')			// right
+						{
+							//self.reps = self.length
+							var jletter = self._createLetter( self.letters[ self.length - self.reps -1 ] )
+							
+							self.$elem.prepend( jletter );
+						}
+						else
+						{
+							var jletter = self._createLetter( self.letters[ self.reps ] )
+							
+							self.$elem.append( jletter );
+						}
+					
+						//self.$elem.prepend( jletter );
+					
+					
+						self.reps += 1
+					}
+					else
+					{
+						if(self.config.infinite)
+						{
+						self.reps = 0;
+						self.repeating = true
+						}
+						else
+						{
+						cancelRequestAnimFrame(self.request);
+						}
+					}
+		},
+		
+		
+		
 		_leftText: function (  )
 		{
 			var self = this
@@ -212,7 +412,8 @@
 						//if(i > 10)
 						//console.log( $('.fonteo-letter:last').text() )
 						//self.$elem.find('.'+self.config.className+':first').remove()
-						var ltrOut = self._getEdgeLetter(0, 1)
+						//var ltrOut = self._getEdgeLetter(0, 1)
+						var ltrOut = self._getEdgeLetter(-1, -1)
 						
 						if( self.config.letterOut && typeof self.config.letterOut === 'function' )
 						{
@@ -493,7 +694,29 @@
 		_initEvents : function(){
 		},
 
+		
 		pause : function(){
+		
+			var self = this
+			if(self.animation)
+			{
+			cancelRequestAnimFrame(self.request);
+			self.isPaused = true
+			}
+		},
+
+		unpause : function(){
+			var self = this
+			//self._loopRefresh()
+			if(self.animation)
+			{
+			self.isPaused = false
+			cancelRequestAnimFrame( self.request );
+			self._loop( )
+			}
+		},
+		
+		pause2 : function(){
 			
 			var self = this
 			clearTimeout( self.timer );
@@ -503,7 +726,7 @@
 			
 		},
 		
-		unpause : function(){
+		unpause2 : function(){
 			
 			var self = this
 			
@@ -543,12 +766,26 @@
 		
 		toggleDirection : function(){
 			
-			//var self = this
+			var self = this
 			
+			//alert(345)
 			//clearTimeout( self.timer );
 			//if(!self.repeating)
 			//return;
+			if(self.animation)
+			{
+				if( self.config.direction == 'right')
+				self.config.direction = 'left';
+				else
+				self.config.direction = 'right';
+			}
+			//self.rep = Math.abs( self.reps - self.length  ) + 2
+			//cancelRequestAnimFrame(self.request);
 			
+			//alert( self.config.direction )
+			//self._loop()
+			
+			//alert( self.config.direction )
 			//self.pause()
 			//console.log( self.letters.length )
 			//self.wasToggled = true
