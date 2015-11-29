@@ -702,7 +702,7 @@
 			if(self.animation)
 			{
 			cancelRequestAnimFrame(self.request);
-			self.isPaused = true
+			self.wasPaused = true
 			}
 		},
 
@@ -711,7 +711,7 @@
 			//self._loopRefresh()
 			if(self.animation)
 			{
-			self.isPaused = false
+			self.wasPaused = false
 			cancelRequestAnimFrame( self.request );
 			self._loop( )
 			}
