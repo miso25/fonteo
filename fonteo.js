@@ -126,6 +126,7 @@
 			self.length = self.letters.length
 			
 			//self._animate()
+			self.$elem.text("")
 			self.animation = self.config.direction === 'left' || self.config.direction === 'right'
 			if(self.animation)
 			self._loop()
