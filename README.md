@@ -13,7 +13,7 @@ Then insert an element with some text to your HTML output
 
 	<p class='text'>Hello World! I am Fonteo - a jQuery Plugin to animate text...</p>
  
-This is a basic usage. It only splits a text within all elements with the class ".text" to individual letters. Check [jsFiddle example](https://jsfiddle.net/miso25/5u1q7s1n/)
+This is a basic usage without text movement. It only splits a text within all elements with the class ".text" to individual letters and adds some animation. Check [jsFiddle example](https://jsfiddle.net/miso25/5u1q7s1n/)
 
 	$('.text').fonteo()
 
