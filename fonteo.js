@@ -83,6 +83,7 @@
 		defaults: { 
 			direction: 'default',
 			infinite: false,
+			moving: false,
 			text: '',
 			speed: 100,
 			pauseOnHover: false,
@@ -127,11 +128,14 @@
 			
 			//self._animate()
 			self.$elem.text("")
-			self.animation = self.config.direction === 'left' || self.config.direction === 'right'
-			if(self.animation)
-			self._loop()
-			else
+			self.moving = self.config.moving
+			//self.moving = self.config.direction === 'left' || self.config.direction === 'right'
+			if(!self.moving)
 			self._createTextDefault();
+			
+			self._loop()
+			//else
+			//self._createTextDefault();
 			
 			
 			
@@ -306,53 +310,81 @@
 		{
 			var self = this
 			
+			
 				if( self.reps < self.length )
 					{
-						if(self.repeating)
+						
+						// letter out
+						if( self.moving )
 						{
-							//if(i > 10)
-							//console.log( $('.fonteo-letter:last').text() )
-							//self.$elem.find('.'+self.config.className+':first').remove()
-							//var ltrOut = self._getEdgeLetter(0, 1) // append
-							
+							if( self.repeating  )
+							{
+								//if(i > 10)
+								//console.log( $('.fonteo-letter:last').text() )
+								//self.$elem.find('.'+self.config.className+':first').remove()
+								//var ltrOut = self._getEdgeLetter(0, 1) // append
+								
+								if(self.config.direction == 'right')			// right
+								{
+								
+									var ltrOut = self._getEdgeLetter(-1, -1) // prepend
+								}
+								else
+									var ltrOut = self._getEdgeLetter(0, 1) // prepend
+				
+								if( self.config.letterOut && typeof self.config.letterOut === 'function' )
+								{
+									//if(ltrOut.is(':animated'))
+									//console.log('aaaaaanimated');
+
+									
+									self.config.letterOut( ltrOut )
+								}
+								else
+								{
+									ltrOut.remove()
+								}
+							}
+						
 							if(self.config.direction == 'right')			// right
 							{
-							
-								var ltrOut = self._getEdgeLetter(-1, -1) // prepend
-							}
-							else
-								var ltrOut = self._getEdgeLetter(0, 1) // prepend
-			
-							if( self.config.letterOut && typeof self.config.letterOut === 'function' )
-							{
-								//if(ltrOut.is(':animated'))
-								//console.log('aaaaaanimated');
-
+								//self.reps = self.length
+								var jletter = self._createLetter( self.letters[ self.length - self.reps -1 ] )
 								
-								self.config.letterOut( ltrOut )
+								self.$elem.prepend( jletter );
 							}
-							else
+							else if(self.config.direction == 'left')			// left
 							{
-								ltrOut.remove()
+								var jletter = self._createLetter( self.letters[ self.reps ] )
+								
+								self.$elem.append( jletter );
 							}
-						}
-						
-			
-			
-						if(self.config.direction == 'right')			// right
-						{
-							//self.reps = self.length
-							var jletter = self._createLetter( self.letters[ self.length - self.reps -1 ] )
-							
-							self.$elem.prepend( jletter );
 						}
 						else
 						{
-							var jletter = self._createLetter( self.letters[ self.reps ] )
+							//var jletter = self._createLetter( self.letters[ self.reps ] )
+							//console.log( self.letters[ self.reps ] )
+							//console.log( self.reps )
+							if(self.config.direction == 'right')
+							var ltr = $( '.' + self.config.className ).eq( self.reps - 1 )
+							else
+							var ltr = $( '.' + self.config.className ).eq( self.length - self.reps -1 )
 							
-							self.$elem.append( jletter );
+							if(  typeof self.config.animate === 'function' )
+							{
+								self.config.animate( ltr )
+								
+							}
+							else
+							cancelRequestAnimFrame(self.request);
+							
+		
+							//setTimeout( function(){
+							//$( '.' + self.config.className )
+							//.eq( self.reps - 1 ).text(1)
+							//}, 1500)
 						}
-					
+						
 						//self.$elem.prepend( jletter );
 					
 					
@@ -699,7 +731,7 @@
 		pause : function(){
 		
 			var self = this
-			if(self.animation)
+			if(self.moving)
 			{
 			cancelRequestAnimFrame(self.request);
 			self.wasPaused = true
@@ -709,7 +741,7 @@
 		unpause : function(){
 			var self = this
 			//self._loopRefresh()
-			if(self.animation)
+			if(self.moving)
 			{
 			self.wasPaused = false
 			cancelRequestAnimFrame( self.request );
@@ -773,7 +805,7 @@
 			//clearTimeout( self.timer );
 			//if(!self.repeating)
 			//return;
-			if(self.animation)
+			if(self.moving)
 			{
 				if( self.config.direction == 'right')
 				self.config.direction = 'left';
