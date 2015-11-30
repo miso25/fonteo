@@ -43,7 +43,8 @@ A complete listing of the options that can be passed to the method is below.
 
 Option | Data Attribute | Default | Description
 ----|------|----|----
-direction | data-direction  | 'default'  | direction
+moving | data-moving  | false  | Moving text to the left or right
+direction | data-direction  | 'default'  | Set direction of text movement. Only applicable if value of property moving is set to true
 infinite | data-infinite  | false  | infinite
 speed | data-speed  | 100  | speed
 text | data-text  | ''  | text
