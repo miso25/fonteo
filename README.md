@@ -44,13 +44,13 @@ A complete listing of the options that can be passed to the method is below.
 Option | Data Attribute | Data type | Default | Description
 ----|------|----|----|----
 moving | data-moving  | boolean | false  | Moving text to the left or right
-direction | data-direction | {'left','right'} | 'left'  | Set direction of text movement. Only applicable if value of property moving is set to true. 
+direction | data-direction | string:{'left','right'} | 'left'  | Set direction of text movement. Only applicable if value of property moving is set to true. 
 infinite | data-infinite  | boolean | false  | infinite
-speed | data-speed | FLOAT | 100  | speed in fps (frames per seconds)
-text | data-text  | STRING | ''  | text
-pauseOnHover | data-pause-on-hover | BOOLEAN | false  | pauseOnHover
-className | data-class-name | STRING | 'fonteo-letter'  | className
-tpl | data-tpl  | STRING | '<span>{{fonteo-letter}}</span>'  | tpl
+speed | data-speed | float | 100  | speed in fps (frames per seconds)
+text | data-text  | string | ''  | text
+pauseOnHover | data-pause-on-hover | boolean | false  | pauseOnHover
+className | data-class-name | string | 'fonteo-letter'  | className
+tpl | data-tpl  | string | '<span>{{fonteo-letter}}</span>'  | tpl
 
 # Public API
 Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
