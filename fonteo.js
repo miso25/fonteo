@@ -366,9 +366,9 @@
 							//console.log( self.letters[ self.reps ] )
 							//console.log( self.reps )
 							if(self.config.direction == 'right')
-							var ltr = $( '.' + self.config.className ).eq( self.reps - 1 )
+							var ltr = self.$elem.find( '.' + self.config.className ).eq( self.reps - 1 )
 							else
-							var ltr = $( '.' + self.config.className ).eq( self.length - self.reps -1 )
+							var ltr = self.$elem.find( '.' + self.config.className ).eq( self.length - self.reps -1 )
 							
 							if(  typeof self.config.animate === 'function' )
 							{
