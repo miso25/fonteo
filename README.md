@@ -17,13 +17,13 @@ This is a basic usage without text movement. It only splits a text within all el
 
 	$('.text').fonteo()
 
-Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text starts moving to the left after the letters are initialized. Check [jsFiddle example](https://jsfiddle.net/miso25/xup0tvua/)
+Adding some animation to the text with basic typing effect. If a value of the property 'infinite' is set to 'true', text starts moving to the left after the letters are initialized. Check [jsFiddle example](https://jsfiddle.net/miso25/xup0tvua/10/)
 
 	$('.text').fonteo({ direction: 'left' })
 	
-Adding custom animation to the text. Check [jsFiddle example](https://jsfiddle.net/miso25/fgg9c0r9/)
+Adding custom animation to the text. Check [jsFiddle example](https://jsfiddle.net/miso25/fgg9c0r9/6/)
 
-Simple loading animation. Check [jsFiddle example](https://jsfiddle.net/miso25/956d0nkp/)
+Simple loading animation. Check [jsFiddle example](https://jsfiddle.net/miso25/956d0nkp/5/)
 
 	var opts = {
 		direction: 'left', 
@@ -36,7 +36,7 @@ Simple loading animation. Check [jsFiddle example](https://jsfiddle.net/miso25/9
 	
 	$('.text').fonteo( opts )
 	
-Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/)
+Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/5/)
 
 # Options
 A complete listing of the options that can be passed to the method is below.
@@ -53,7 +53,7 @@ className | data-class-name | string | 'fonteo-letter'  | className
 tpl | data-tpl  | string | '<span>{{fonteo-letter}}</span>'  | tpl
 
 # Public API
-Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/)
+Toggle pause of text movement. Check [jsFiddle example](https://jsfiddle.net/miso25/aavdvq3k/6/)
 
 # Browser compatibility
 
