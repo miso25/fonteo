@@ -39,7 +39,7 @@ Simple loading animation. Check [jsFiddle example](https://jsfiddle.net/miso25/9
 Use events 'letterIn' and 'letterOut' for adding custom animation to your text. See the [jsFiddle example](https://jsfiddle.net/miso25/3kk9m9qx/5/)
 
 # Options
-A complete listing of the options that can be passed to the method is below.
+A complete listing of all options applicable for this plugin.
 
 Option | Data Attribute | Data type | Default | Description
 ----|------|----|----|----
